@@ -12,13 +12,9 @@ import mediapipe as mp
 
 class handDetector:
     def __init__(self, mode=False, maxHands=2, detectionCon=0.5, trackCon=0.5):
-        self.mode = mode
-        self.maxHands = maxHands
-        self.detectionCon = detectionCon
-        self.trackCon = trackCon
-
+        # declaring variables to use in the function while detecting hand
         self.mpHands = mp.solutions.hands
-        self.hands = self.mpHands.Hands(self.mode, self.maxHands, self.detectionCon, self.trackCon)
+        self.hands = self.mpHands.Hands(mode, maxHands, detectionCon, trackCon)
         self.mpDraw = mp.solutions.drawing_utils
         self.imgRGB = None
         self.landmarks = None
@@ -36,14 +32,9 @@ class handDetector:
             myHand = self.landmarks[handNo]  # getting landmarks coordinates in lmList
             for id, lm in enumerate(myHand.landmark):
                 h, w, c = img.shape
-                cx, cy = int(lm.x * w), int(lm.y * h)
-                lmList.append([id, cx, cy])
-
-                # print(id, lm)      # find position in terms of x,y
-                # print(id, cx, cy)  # find position of number or a point
-
-                # to draw a circles on top
-                if drawDots:
+                cx, cy = int(lm.x * w), int(lm.y * h)  # lm gives position in terms of x,y like 0.3,0.4
+                lmList.append([id, cx, cy])  # cx, cy gives position in terms of number or a point
+                if drawDots: # to draw a circles on top
                     # if id==4:  # If we want to draw only on the top of thumb(4 is index of thumb)
                     cv2.circle(img, (cx, cy), dotSize, (255, 0, 255), cv2.FILLED)
 
